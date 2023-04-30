@@ -1,0 +1,42 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="min-h-screen bg-gray-100 flex items-center justify-center">
+    <div class="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
+      <h2 class="font-bold text-3xl mb-4 text-center text-black">Registro</h2>
+      <form method="post" class="space-y-6" id="signup-form" action="{% url 'core:signup' %}">
+        {% csrf_token %}
+        <div class="space-y-2">
+          {% for field in form %}
+            <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">
+              {{ field.label }}
+            </label>
+            <div class="mt-1">
+              <input id="{{ field.id_for_label }}" type="{{ field.field.widget.input_type }}"
+                     name="{{ field.html_name }}" value="{{ field.value|stringformat:'s' }}"
+                     class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                     required>
+            </div>
+          {% endfor %}
+        </div>
+        <div>
+          <button type="submit"
+                  class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Registrarse
+          </button>
+        </div>
+      </form>
+      <div id="success-message" class="hidden mt-4 p-4 bg-green-100 border-l-4 border-green-500 text-green-700">
+        <p>¡Registro exitoso! Por favor, inicia sesión.</p>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+

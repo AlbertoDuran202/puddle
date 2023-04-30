@@ -1,0 +1,262 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}Welcome |{% endblock %}
+
+{% block content %}
+<style>
+  /* Aquí van tus estilos CSS */
+  body {
+  font-family: 'Helvetica Neue', sans-serif;
+  background-color: #f5f5f5;
+}
+h1, h2, h3, h4, h5, h6, .item-text {
+  font-family: 'Helvetica Neue', sans-serif;
+}
+.main-title {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  color: #2e2e2e;
+}
+.subtitle {
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  color: #4a4a4a;
+}
+  .item-title {
+    font-weight: 600;
+  }
+  .item-price {
+    font-weight: 300;
+  }
+  .item-card, .category-card {
+    border: 1px solid #ccc;
+    transition: 0.3s;
+  }
+  .item-card:hover, .category-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .item-card .relative img {
+    transition: transform 0.3s;
+  }
+
+  .item-card:hover .relative img {
+    transform: scale(1.1);
+  }
+
+  .instagram-image {
+    border-radius: 5px;
+    overflow: hidden;
+    max-width: 100%;
+  }
+
+  @media (max-width: 640px) {
+    .main-title {
+      font-size: 2rem;
+    }
+    .subtitle {
+      font-size: 1.2rem;
+    }
+  }
+
+  .video-container {
+  position: relative;
+  width: 100%;
+  height: 50vh;
+  overflow: hidden;
+}
+
+.overlay {
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+
+.promo-title, .promo-text {
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .promo-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff4f4;
+  }
+
+  .promo-text {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #fdf7f7;
+  }
+
+  .item-card:hover .item-title,
+  .item-card:hover .item-price {
+    color: #454545;
+  }
+
+
+  .grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 20px;
+  padding: 20px;
+}
+
+.blur-items:hover .item-card:not(:hover) {
+  filter: blur(3px);
+  transition: filter 0.3s;
+}
+
+</style>
+
+
+
+
+
+<div class="video-container relative">
+  <video autoplay muted loop playsinline class="w-full h-full object-cover">
+    <source src="{% static 'videos/videoplayback.mp4' %}" type="video/mp4">
+    Tu navegador no soporta la etiqueta video.
+</video>
+  <div class="overlay absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+      <div class="promo-text text-white text-center">
+
+
+<!-- Add social media icons -->
+<div class="social-icons mb-4">
+  <a href="https://www.instagram.com/balenciaga" target="_blank" rel="noopener noreferrer" class="social-icon"><i class="fab fa-instagram"></i></a>
+</div>
+
+
+<h2 class="text-4xl mb-4 promo-title">BUY NOW OR DIE</h2>
+<p class="text-xl promo-text">Please? :) </p>
+
+      </div>
+  </div>
+</div>
+
+
+{% load static %}
+<div class="mt-12 px-6">
+  <h2 class="text-center main-title">New items</h2>
+  <div class="grid-container blur-items">
+    {% for item in items %}
+      <div class="item-card rounded-lg">
+        <a href="{% url 'item:detail' item.id %}">
+          <div class="relative h-64 overflow-hidden rounded-t-lg">
+            {% if item.image %}
+              <img src="{{ item.image.url }}" class="object-cover h-full w-full">
+            {% else %}
+              <img src="{% static '/workspaces/puddle/puddle_/static/1583628-200.png' %}" class="object-cover h-full w-full">
+            {% endif %}
+          </div>
+          <div class="p-6 bg-white rounded-b-lg">
+            <h2 class="text-2xl item-title font-serif font-bold text-gray-800 item-text">{{ item.name }}</h2>
+            <p class="text-gray-600 item-price font-serif item-text">Price: {{ item.price }}</p>
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+
+
+
+
+
+  <!-- Instagram Images -->
+
+
+<!-- Instagram Images -->
+<!-- Instagram Images -->
+<div class="mt-12 instagram-section">
+  <h2 class="text-center main-title">@puddlecouture</h2>
+  <div id="instagramCarousel" class="carousel slide" data-bs-ride="carousel" style="overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);">
+    <div class="carousel-inner">
+      {% for image_url in image_urls %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}" style="overflow: hidden;">
+          <div class="d-flex justify-content-center">
+            <img src="{{ image_url }}" class="d-block w-auto instagram-image" alt="Instagram image" style="transform: translateY(0); transition: transform 1s ease-in-out; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);">
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#instagramCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#instagramCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>
+
+<style>
+  .instagram-section {
+    background-image: linear-gradient(135deg, #9D9D9D 0%, #454545 100%);
+    padding: 50px 0;
+  }
+
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
+  }
+</style>
+
+<script>
+  const instagramCarousel = document.getElementById('instagramCarousel');
+
+  instagramCarousel.addEventListener('slid.bs.carousel', (event) => {
+    const activeImage = event.target.querySelector('.carousel-item.active img');
+    activeImage.style.transform = 'translateY(-10%)';
+
+    const prevImage = event.target.querySelector('.carousel-item-prev img');
+    if (prevImage) {
+      prevImage.style.transform = 'translateY(0)';
+    }
+
+    const nextImage = event.target.querySelector('.carousel-item-next img');
+    if (nextImage) {
+      nextImage.style.transform = 'translateY(0)';
+    }
+  });
+
+
+
+
+</script>
+
+  
+</div>
+
+<div class="mt-12 px-6">
+  <h2 class="text-center main-title">Categories</h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    {% for category in categories %}
+      <div class="category-card rounded-lg">
+        <a href="#">
+          <div class="flex flex-col items-center justify-center h-64 p-6 bg-white rounded-lg">
+            <h2 class="subtitle">{{ category.name }}</h2>
+            <p class="text-gray-500">{{ category.items.count }} Items</p>
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ item.name }}{% endblock %}
+
+{% block content %}
+<style>
+    .image-container {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+      background-color: white;
+      padding: 2;
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 300ms;
+    }
+
+    .image-container:hover {
+      transform: scale(1.05);
+    }
+
+    .image-container img {
+      transition: transform 0.3s;
+    }
+
+    .image-container:hover img {
+      transform: scale(1.1);
+    }
+
+    .add-to-cart-btn {
+        display: inline-block;
+        margin-top: 16px;
+        padding: 10px 20px;
+        background-color: #000;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .add-to-cart-btn:hover {
+        background-color: #444;
+        color: #fff;
+    }
+</style>
+
+<div class="container mx-auto px-6">
+    <div class="flex flex-col md:flex-row md:grid md:grid-cols-5 md:gap-6">
+        <div class="md:col-span-3">
+          <div class="image-container">
+            <img src="{{ item.image.url }}" class="rounded-xl w-full h-full object-cover" />
+          </div>
+        </div>
+
+        <div class="md:col-span-2 p-6 bg-gray-100 rounded-xl shadow-lg mt-6 md:mt-0">
+            <h1 class="mb-6 text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-widest uppercase">
+                {{ item.name }}
+            </h1>
+
+            <p class="mb-4 text-xl text-gray-500">
+                <strong>Price: </strong>
+                <span class="font-bold">{{ item.price }}</span>
+            </p>
+            {% if item.description %}
+                <p class="mb-4 text-xl text-gray-700">
+                <strong class="text-gray-500">Description</strong><br>
+                <span class="font-bold">{{ item.description }}</span> </p>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+                {% if in_cart %}
+                    <a href="{% url 'item:remove_from_cart' item.pk %}" class="add-to-cart-btn">Remove from Cart</a>
+                {% else %}
+                    <a href="{% url 'item:add_to_cart' item.pk %}" class="add-to-cart-btn">Add to Cart</a>
+                {% endif %}
+            {% else %}
+                <p><a href="{% url 'login' %}">Log in</a> to add this item to your cart.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
