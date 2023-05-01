@@ -4,8 +4,8 @@ FROM python:3.9
 # Set the working directory to /app
 WORKDIR /app
 
-# Copy the requirements.txt file into the container at /app
-COPY requirements.txt /app
+# Copy the current directory contents into the container at /app
+COPY . /app
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
@@ -18,3 +18,6 @@ ENV NAME Django-Dev
 
 # Run app.py when the container launches
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+RUN useradd -m albertoduran202
+

@@ -9,8 +9,11 @@
     "example.extension1",
     "example.extension2"
   ],
-  "remoteUser": "albertoduran202",
   "forwardPorts": [3000, 8000],
-  "postCreateCommand": "echo 'Welcome to your development container!'"
+  "postCreateCommand": "echo 'Welcome to your development container!'",
+  "runArgs": [
+    "--user", "albertoduran202"
+  ]
 }
+
 

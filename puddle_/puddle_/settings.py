@@ -12,6 +12,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     'albertoduran202-silver-garbanzo-9xwppqj4p74c7gxw.github.dev',
+    '127.0.0.1',
 ]
 
 # Añadir esta línea para configurar los orígenes CSRF confiables
