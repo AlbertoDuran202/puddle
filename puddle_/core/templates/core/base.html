@@ -1,0 +1,296 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% load static custom_filters %}
+<title> {% block title %} {% endblock %} Puddle Couture </title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+
+<!-- Add the Font Awesome library for the social media icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" crossorigin="anonymous">
+
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+
+
+<!-- Add custom styles -->
+<style>
+  body {
+      font-family: 'Helvetica Neue', sans-serif;
+      background-color: #f5f5f5;
+  }
+  h1, h2, h3, h4, h5, h6 {
+      font-family: 'Arial', sans-serif;
+  }
+  .nav-text {
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #f5f5f5;
+  }
+  .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      background-color: white;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 12px 0;
+      z-index: 999;
+      box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+
+  @media (max-width: 767px) {
+        .nav-text {
+            color: #2d3748;
+        }
+
+        .white-gradient-text {
+            color: #2d3748;
+            -webkit-text-fill-color: initial;
+            background-image: none;
+        }
+
+        .view-cart-link {
+            color: #070000;
+        }
+
+        .view-cart-link:hover {
+            color: #d8baba;
+            text-decoration: none;
+        }
+    }
+
+
+
+
+
+
+  .social-icons {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+  }
+  .social-icon {
+      margin: 0 0.5rem;
+      font-size: 1.5rem;
+      color: #000000;
+      transition: color 0.3s;
+  }
+  .social-icon:hover {
+      color: #0c60f1;
+  }
+
+  .view-cart-link {
+      display: inline-block;
+      padding: 8px 16px;
+      background-color: #000000;
+      color: #fff;
+      font-weight: 600;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+  }
+  
+  /* ... el resto de tu código CSS ... */
+  a {
+      text-decoration: none;
+      color: inherit;
+  }
+  a:hover {
+      text-decoration: none;
+  }
+  
+  .white-gradient-text {
+        background-image: linear-gradient(90deg, #ffffff 0%, #e0e0e0 50%, #ffffff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+  
+
+    .nav-link {
+        transition: color 0.3s ease;
+    }
+
+    .nav-link:hover {
+        color: #b5b5b5;
+    }
+
+
+
+  .view-cart-link {
+      color: #f5f5f5;
+  }
+  .view-cart-link:hover {
+      color: #b5b5b5;
+      text-decoration: none;
+  }
+
+
+  @keyframes gradient-animation {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    .gradient-bg {
+      background-image: linear-gradient(270deg, #f0f0f7, #aca5a5, #5e5e68);
+
+      background-size: 300% 300%;
+
+      animation: gradient-animation 10s ease infinite;}
+
+    .logo-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #000000;
+    transition: color 0.6s;
+  }
+
+  .logo-text:hover {
+    color: #e97e7e;
+  }
+
+
+</style>
+
+<!-- Add jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Add Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+</head>
+<body>
+  <nav class="py-6 px-6 flex justify-between items-center border-b border-gray-200 gradient-bg">
+    <a href="/" class="logo-text">Puddle Couture</a>
+    <div class="hidden md:flex space-x-6 items-center">
+        <a href="{% url 'item:view_cart' %}" class="view-cart-link">View cart</a>
+        <!-- ... -->
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}?next=/" class="view-cart-link">Logout</a>
+            <span class="text-lg font-semibold nav-text ml-6">Hi {{ user.username }}!</span>
+        {% else %}
+            <a href="{% url 'core:signup' %}" class="view-cart-link">Sign up</a>
+            <a href="{% url 'login' %}" class="view-cart-link">Log in</a>
+        {% endif %}
+    </div>
+</nav>
+
+
+  
+  
+  
+  {% if messages %}
+  <div class="container mx-auto mt-4">
+    {% for message in messages %}
+      <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-2" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  
+  <div class="bottom-nav md:hidden">
+    <a href="{% url 'item:view_cart' %}" class="nav-text">View cart</a>
+    {% if user.is_authenticated %}
+        <span class="nav-text">Hi {{ user.username }}!</span>
+        <a href="{% url 'logout' %}?next=/" class="nav-text">Logout</a>
+        {% else %}
+        <a href="{% url 'core:signup' %}" class="nav-text">Sign up</a>
+        <a href="{% url 'login' %}" class="nav-text">Log in</a>
+    {% endif %}
+  </div>
+
+  {% block content %}
+
+
+ {% for image_url in image_urls %}
+  <div class="instagram-image">
+      <img src="{{ image_url }}" alt="">
+  </div>
+{% endfor %}
+
+
+
+  {% endblock %}
+
+
+
+
+  <footer class="bg-gray-800 text-white py-8 mt-8">
+    <div class="container mx-auto px-6">
+      <div class="flex justify-between">
+        <div class="w-full md:w-1/4 mb-6 md:mb-0">
+          <h3 class="text-xl font-bold mb-4">About Puddle Couture</h3>
+          <p>
+            Puddle Couture is a high-end fashion retailer that offers the latest trends from top designers. Our mission is to provide our customers with an exceptional shopping experience.
+          </p>
+        </div>
+        <div class="w-full md:w-1/4 mb-6 md:mb-0">
+          <h3 class="text-xl font-bold mb-4">Customer Service</h3>
+          <ul>
+            <li><a href="#" class="hover:text-gray-400">Contact Us</a></li>
+            <li><a href="#" class="hover:text-gray-400">Shipping & Returns</a></li>
+            <li><a href="#" class="hover:text-gray-400">Order Tracking</a></li>
+            <li><a href="#" class="hover:text-gray-400">Size Guide</a></li>
+          </ul>
+        </div>
+        <div class="w-full md:w-1/4 mb-6 md:mb-0">
+          <h3 class="text-xl font-bold mb-4">Legal</h3>
+          <ul>
+            <li><a href="#" class="hover:text-gray-400">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-gray-400">Terms & Conditions</a></li>
+            <li><a href="#" class="hover:text-gray-400">Cookie Policy</a></li>
+          </ul>
+        </div>
+
+
+        <div class="w-full md:w-1/4">
+          <h3 class="text-xl font-bold mb-4">Connect with us</h3>
+          <div class="social-icons">
+            <a href="https://www.facebook.com/balenciaga" target="_blank" rel="noopener noreferrer" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/balenciaga" target="_blank" rel="noopener noreferrer" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/balenciaga" target="_blank" rel="noopener noreferrer" class="social-icon"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+ 
+
+
+  
+  
+
+</body>
+</html>
+
+
+
+
