@@ -3,7 +3,12 @@
     "workspaceFolder": "/workspaces/puddle",
     "dockerFile": "Dockerfile",
     "settings": {
-      "terminal.integrated.shell.linux": "/bin/bash"
+      "terminal.integrated.profiles.linux": {
+        "bash": {
+          "path": "/bin/bash"
+        }
+      },
+      "terminal.integrated.defaultProfile.linux": "bash"
     },
     "extensions": [
       "example.extension1",
