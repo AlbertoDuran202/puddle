@@ -52,8 +52,25 @@ class CartItem(models.Model):
         return self.item.price * self.quantity
 
 
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_paid = models.BooleanField(default=False)
+    is_shipped = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, related_name="order_items", on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
 
+class ShippingAddress(models.Model):
+    order = models.OneToOneField(Order, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    address = models.CharField(max_length=255)
+    city = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    zip_code = models.CharField(max_length=20)
 
 
 
