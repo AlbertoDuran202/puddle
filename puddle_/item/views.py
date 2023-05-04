@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Item, Cart, CartItem
+from .models import Item, Cart, CartItem, ShippingAddress
+from .forms import ShippingAddressForm
 
 def item_detail(request, pk):
     item = get_object_or_404(Item, pk=pk)
@@ -22,7 +23,7 @@ def add_to_cart(request, pk):
         cart_item.quantity += 1
         cart_item.save()
 
-    return redirect("item:detail", pk=pk) # Cambia esta vista al nombre de la vista donde quieras redirigir al usuario.
+    return redirect("item:detail", pk=pk)
 
 @login_required
 def remove_from_cart(request, pk):
@@ -36,8 +37,7 @@ def remove_from_cart(request, pk):
     else:
         cart_item.save()
 
-    return redirect("item:detail", pk=pk) # Cambia esta vista al nombre de la vista donde quieras redirigir al usuario.ambia esta vista al nombre de la vista donde quieras redirigir al usuario.
-
+    return redirect("item:detail", pk=pk)
 
 @login_required
 def view_cart(request):
@@ -61,8 +61,16 @@ def update_cart(request, pk):
 
     return redirect("item:view_cart")
 
-
 @login_required
-def checkout(request):
-    # Aquí va tu lógica de proceso de pago
-    return render(request, "item/checkout.html")
+def create_shipping_address(request):
+    if request.method == 'POST':
+        form = ShippingAddressForm(request.POST)
+        if form.is_valid():
+            shipping_address = form.save(commit=False)
+            shipping_address.user = request.user
+            shipping_address.save()
+            return redirect('item:checkout')
+    else:
+        form = ShippingAddressForm()
+    return render(request, 'item/create_shipping_address.html', {'form': form})
+
