@@ -1,10 +1,30 @@
-{% extends 'base.html' %}
+{% extends 'core/base.html' %}
+{% load static %}
+
+
+
 
 {% block content %}
-  <h2>Crear dirección de envío</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Guardar dirección de envío</button>
-  </form>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-lg-6 offset-lg-3">
+        <div class="card bg-dark text-white shadow-lg">
+          <div class="card-body">
+            <h2 class="text-center mb-4">Crear dirección de envío</h2>
+            <form method="post" class="dark-form">
+              {% csrf_token %}
+              {% for field in form %}
+                <div class="mb-3">
+                  {{ field.label_tag }} {{ field|add_class:"form-control" }}
+                </div>
+              {% endfor %}
+              <button type="submit" class="btn btn-dark-outline w-100">Guardar dirección de envío</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
+
+
