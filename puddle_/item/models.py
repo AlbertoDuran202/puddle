@@ -64,7 +64,7 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField()
 
 class ShippingAddress(models.Model):
-    order = models.OneToOneField(Order, on_delete=models.CASCADE)
+    order = models.OneToOneField(Order, on_delete=models.CASCADE, null=True, blank=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     address = models.CharField(max_length=255)

@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Item, Cart, CartItem, ShippingAddress
+from .models import Item, Cart, CartItem, ShippingAddress, Order
 from .forms import ShippingAddressForm
+from django.contrib import messages
+
 
 def item_detail(request, pk):
     item = get_object_or_404(Item, pk=pk)
@@ -62,15 +64,28 @@ def update_cart(request, pk):
     return redirect("item:view_cart")
 
 @login_required
+def create_order(request):
+    order = Order.objects.create(user=request.user)
+    request.session['order_id'] = order.id
+    # Añade la lógica adicional que necesites para la creación de pedidos aquí
+    return redirect("item:create_shipping_address")
+
+@login_required
 def create_shipping_address(request):
     if request.method == 'POST':
         form = ShippingAddressForm(request.POST)
         if form.is_valid():
             shipping_address = form.save(commit=False)
+            order_id = request.session.get('order_id')
+            if order_id is not None:
+                order = Order.objects.get(pk=order_id)
+                shipping_address.order = order
             shipping_address.user = request.user
             shipping_address.save()
+            messages.success(request, 'La dirección de envío se ha guardado con éxito.')
             return redirect('item:checkout')
     else:
         form = ShippingAddressForm()
     return render(request, 'item/create_shipping_address.html', {'form': form})
+
 
