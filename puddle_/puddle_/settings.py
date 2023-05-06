@@ -103,12 +103,14 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 DEBUG = True
 
-LOGIN_REDIRECT_URL = 'index' 
+LOGIN_REDIRECT_URL = 'index'
 
-
+# Añadir esta línea para utilizar el modelo CustomUser
+AUTH_USER_MODEL = 'item.CustomUser'
 
 sys.path.append(os.path.abspath("puddle_/core/templatetags"))
 
 load_dotenv()
 INSTAGRAM_USERNAME = os.environ['INSTAGRAM_USERNAME']
 INSTAGRAM_PASSWORD = os.environ['INSTAGRAM_PASSWORD']
+

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from item.models import Item, category
+from item.models import Item, Category
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
@@ -13,7 +13,7 @@ from instagram.views import get_instagram_feed
 
 def index(request):
     items = Item.objects.filter(is_sold=False)
-    categories = category.objects.all()
+    categories = Category.objects.all()
     image_urls = get_instagram_feed() # llama a la función get_instagram_feed() de tus vistas de instagram para obtener los enlaces de las imágenes
    
     return render(request, "core/index.html", {
