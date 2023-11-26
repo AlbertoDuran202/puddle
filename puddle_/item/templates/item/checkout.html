@@ -1,0 +1,86 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-lg-8 offset-lg-2">
+        <div class="card bg-dark text-white shadow-lg">
+          <div class="card-body">
+            <h2 class="text-center mb-4">Resumen del Pedido</h2>
+            
+            <!-- Muestra los detalles del pedido -->
+            <h3>Artículos en el Pedido:</h3>
+            {% for order_item in order_items %}
+              <div>
+                <span>{{ order_item.item.name }} - Cantidad: {{ order_item.quantity }} - Precio: ${{ order_item.item.price }}</span>
+              </div>
+            {% endfor %}
+        
+            <div class="text-right mt-6 mb-4">
+              <h2 class="text-xl font-semibold">Total: <span class="text-2xl">${{ total|floatformat:2 }}</span></h2>
+            </div>
+
+            {% if shipping_address %}
+              <h3>Dirección de Envío:</h3>
+              <p>{{ shipping_address.first_name }} {{ shipping_address.last_name }}</p>
+              <p>{{ shipping_address.address }}, {{ shipping_address.city }}, {{ shipping_address.country }} - {{ shipping_address.zip_code }}</p>
+            {% else %}
+              <p>No se ha proporcionado una dirección de envío.</p>
+            {% endif %}
+
+            <!-- Formulario de Pago Stripe -->
+            <form id="payment-form">
+              <div id="payment-element"><!-- Stripe Payment Element --></div>
+              <button id="submit-button">Procesar Pago</button>
+            </form>
+
+<!-- Stripe Elements JavaScript -->
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var stripe = Stripe('{{ stripe_public_key }}');
+    var elements = stripe.elements();
+    var paymentElement = elements.create('card');
+    paymentElement.mount('#payment-element');
+  
+    var form = document.getElementById('payment-form');
+    var submitButton = document.getElementById('submit-button');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      // Deshabilitar el botón de envío
+      submitButton.disabled = true;
+      submitButton.textContent = 'Procesando...';
+
+      stripe.confirmCardPayment('{{ clientSecret }}', {
+        payment_method: {
+          card: paymentElement,
+        },
+        return_url: 'https://bookish-parakeet-qx6ww9pgrp9c9q5-8000.app.github.dev/item/finalize_order/',
+      }).then(function(result) {
+        if (result.error) {
+          // Habilitar el botón si hay un error
+          submitButton.disabled = false;
+          submitButton.textContent = 'Procesar Pago';
+          console.log(result.error.message);
+        } else {
+          // El usuario será redirigido a la página de confirmación de pago
+          // No se requiere acción adicional aquí
+        }
+      });
+    });
+  });
+</script>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+

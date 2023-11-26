@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-lg-8 offset-lg-2">
+        <div class="card bg-dark text-white shadow-lg">
+          <div class="card-body">
+            <h2 class="text-center mb-4">Confirmación de Pedido</h2>
+            <p>¡Gracias por tu compra! Tu pedido ha sido procesado con éxito.</p>
+
+            <!-- Detalles del pedido -->
+            <h3>Artículos en el Pedido:</h3>
+            {% for order_item in order_items %}
+              <div>
+                <span>{{ order_item.item.name }} - Cantidad: {{ order_item.quantity }} - Precio: ${{ order_item.item.price }}</span>
+              </div>
+            {% endfor %}
+        
+            <!-- Total del pedido -->
+            <div class="text-right mt-4 mb-4">
+              <h4>Total del Pedido: <span>${{ order.total|floatformat:2 }}</span></h4>
+            </div>
+
+            <!-- Dirección de envío -->
+            {% if shipping_address %}
+              <h4>Dirección de Envío:</h4>
+              <p>{{ shipping_address.first_name }} {{ shipping_address.last_name }}</p>
+              <p>{{ shipping_address.address }}, {{ shipping_address.city }}, {{ shipping_address.country }} - {{ shipping_address.zip_code }}</p>
+            {% else %}
+              <p>No se ha proporcionado una dirección de envío.</p>
+            {% endif %}
+
+            <!-- Número de pedido -->
+            <h4>Número de Pedido: #{{ order_id }}</h4>
+
+            <!-- Enlace o botón para volver a la tienda o a la página de inicio -->
+            <a href="{% url 'index' %}" class="btn btn-primary mt-3">Volver a la Tienda</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

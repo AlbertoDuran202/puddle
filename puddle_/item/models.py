@@ -89,12 +89,29 @@ class Order(models.Model):
     user = models.ForeignKey('item.CustomUser', on_delete=models.CASCADE)
     is_paid = models.BooleanField(default=False)
     is_shipped = models.BooleanField(default=False)
+    is_finalized = models.BooleanField(default=False)
+    total = models.FloatField(default=0.0)  # Nuevo campo para almacenar el total
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def recalculate_total(self):
+        self.total = sum(item.get_item_total() for item in self.order_items.all())
+        self.save()
+
+    def __str__(self):
+        status = "Finalizada" if self.is_finalized else "Pendiente"
+        return f"Orden de {self.user.email} - {status}"
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name="order_items", on_delete=models.CASCADE)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.item.name} - Cantidad: {self.quantity}"
+
+    def get_item_total(self):
+        return self.quantity * self.item.price
+
 
 class ShippingAddress(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE, null=True, blank=True)

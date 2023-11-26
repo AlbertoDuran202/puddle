@@ -208,7 +208,7 @@
         <!-- ... -->
         {% if user.is_authenticated %}
             <a href="{% url 'logout' %}?next=/" class="view-cart-link">Logout</a>
-            <span class="text-lg font-semibold nav-text ml-6">Hi {{ user.username }}!</span>
+            <span class="nav-text">Hi {{ user.email }}!</span>
         {% else %}
             <a href="{% url 'core:signup' %}" class="view-cart-link">Sign up</a>
             <a href="{% url 'login' %}" class="view-cart-link">Log in</a>
@@ -233,7 +233,7 @@
   <div class="bottom-nav md:hidden">
     <a href="{% url 'item:view_cart' %}" class="nav-text">View cart</a>
     {% if user.is_authenticated %}
-        <span class="nav-text">Hi {{ user.username }}!</span>
+        <span class="nav-text">Hi {{ user.email }}!</span>
         <a href="{% url 'logout' %}?next=/" class="nav-text">Logout</a>
         {% else %}
         <a href="{% url 'core:signup' %}" class="nav-text">Sign up</a>

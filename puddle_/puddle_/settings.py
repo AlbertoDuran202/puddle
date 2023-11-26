@@ -2,6 +2,10 @@ from pathlib import Path
 import os
 import sys
 from dotenv import load_dotenv
+load_dotenv()
+
+STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -17,7 +21,9 @@ ALLOWED_HOSTS = [
 
 # Añadir esta línea para configurar los orígenes CSRF confiables
 CSRF_TRUSTED_ORIGINS = [
+    'https://localhost:8000',
     'https://albertoduran202-silver-garbanzo-9xwppqj4p74c7gxw-8000.preview.app.github.dev',
+    'https://bookish-parakeet-qx6ww9pgrp9c9q5-8000.app.github.dev',
 ]
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -114,3 +120,22 @@ load_dotenv()
 INSTAGRAM_USERNAME = os.environ['INSTAGRAM_USERNAME']
 INSTAGRAM_PASSWORD = os.environ['INSTAGRAM_PASSWORD']
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+        },
+        'item': {  # Asegúrate de reemplazar 'item' con el nombre de tu aplicación Django
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
